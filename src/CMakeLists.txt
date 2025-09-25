@@ -5,8 +5,10 @@ add_executable(${TARGET}
     main.cpp
     decls.hpp
     global_error_handler.hpp
-    password_search.hpp
-    password_search.cpp
+    pattern_matcher.hpp
+    pattern_matcher.cpp
+    matchers.hpp
+    matchers.cpp
 )
 
 target_link_libraries(${TARGET} PRIVATE tcheck_options tcheck_warnings)

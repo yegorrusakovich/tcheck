@@ -8,10 +8,10 @@
 namespace tcheck
 {
 
-class PasswordProcessor
+class PatternMatcher
 {
 public:
-    PasswordProcessor();
+    PatternMatcher(std::string_view regexp);
     bool IsValid(string const & password) const;
     vector<string> Match(string const & text);
 private:

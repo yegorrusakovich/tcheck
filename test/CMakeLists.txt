@@ -1,21 +1,42 @@
 enable_testing()
 
-add_executable(tchecktest
-    PasswordProcessor_test.cpp
+find_package(gtest REQUIRED) # for intro, project_options, ...
+include(GoogleTest)
+
+add_executable(password
+    PasswordMatcher_test.cpp
 
 # TODO RYS fix
-    ../src/password_search.cpp
-    ../src/password_search.hpp
+    ../src/pattern_matcher.cpp
+    ../src/pattern_matcher.hpp
+    ../src/matchers.cpp
+    ../src/matchers.hpp
 )
 
-target_link_libraries(tchecktest
+target_link_libraries(password
     tcheck_options
     tcheck_warnings
 # TODO RYS why target_link_system_libraries don't link here?
     GTest::gtest_main
 )
 
-find_package(gtest REQUIRED) # for intro, project_options, ...
+gtest_discover_tests(password)
 
-include(GoogleTest)
-gtest_discover_tests(tchecktest)
+add_executable(uri
+    UriMatcher_test.cpp
+
+# TODO RYS fix
+    ../src/pattern_matcher.cpp
+    ../src/pattern_matcher.hpp
+    ../src/matchers.cpp
+    ../src/matchers.hpp
+)
+
+target_link_libraries(uri
+    tcheck_options
+    tcheck_warnings
+# TODO RYS why target_link_system_libraries don't link here?
+    GTest::gtest_main
+)
+
+gtest_discover_tests(uri)

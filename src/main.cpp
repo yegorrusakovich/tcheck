@@ -1,6 +1,6 @@
 #include "decls.hpp"
 #include "global_error_handler.hpp"
-#include "password_search.hpp"
+#include "matchers.hpp"
 
 #include <iostream>
 #include <memory_resource>
@@ -28,7 +28,7 @@ void MainLoop()
     auto alloc = std::pmr::polymorphic_allocator<char>{&pool};
     auto input = string{alloc};
 
-    auto processor = PasswordProcessor{};
+    auto processor = PasswordMatcher{};
 
     while(std::getline(std::cin, input))
     {

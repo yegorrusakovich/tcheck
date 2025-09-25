@@ -1,11 +1,10 @@
-#include "password_search.hpp"
-#include <regex>
+#include "matchers.hpp"
 
 namespace tcheck
 {
 
-PasswordProcessor::PasswordProcessor()
-    : expression_{
+PasswordMatcher::PasswordMatcher()
+    : PatternMatcher {
         // no identicall symbols in a row
         R"(^(?!.*(.)\1))"
         // at least one lowercase
@@ -24,15 +23,8 @@ PasswordProcessor::PasswordProcessor()
     }
 {}
 
-bool PasswordProcessor::IsValid(string const & password) const
-{
-    std::smatch m;
-    return std::regex_match(password, m, expression_);
-}
-
-vector<string> PasswordProcessor::Match(string const &)
-{
-    return {};
-}
+UriMatcher::UriMatcher()
+    : PatternMatcher{""}
+{}
 
 }
