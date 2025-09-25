@@ -1,0 +1,110 @@
+cmake_minimum_required(VERSION 3.21)
+
+if (NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 23)
+endif()
+
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+project(
+  tcheck
+  VERSION 0.0.1
+  DESCRIPTION "text processing tool"
+  LANGUAGES CXX C)
+
+include(cmake/PreventInSourceBuilds.cmake)
+include(ProjectOptions.cmake)
+
+
+tcheck_setup_options()
+
+tcheck_global_options()
+include(Dependencies.cmake)
+tcheck_setup_dependencies()
+
+tcheck_local_options()
+
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
+set(GIT_SHA
+    "Unknown"
+    CACHE STRING "SHA this build was generated from")
+string(
+  SUBSTRING "${GIT_SHA}"
+            0
+            8
+            GIT_SHORT_SHA)
+
+target_compile_features(tcheck_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})
+
+add_library(tcheck::tcheck_options ALIAS tcheck_options)
+add_library(tcheck::tcheck_warnings ALIAS tcheck_warnings)
+
+#add_library(tcheck::tcheck_options INTERFACE IMPORTED)
+#add_library(tcheck::tcheck_warnings INTERFACE IMPORTED)
+
+# configure files based on CMake configuration options
+# add_subdirectory(configured_files)
+
+# Adding the src:
+add_subdirectory(src)
+
+# Don't even look at tests if we're not top level
+if(NOT PROJECT_IS_TOP_LEVEL)
+  return()
+endif()
+
+# Adding the tests:
+include(CTest)
+
+if(BUILD_TESTING)
+enable_testing()
+add_subdirectory(test)
+endif()
+
+
+#if(tcheck_BUILD_FUZZ_TESTS)
+#message(AUTHOR_WARNING "Building Fuzz Tests, using fuzzing sanitizer https://www.llvm.org/docs/LibFuzzer.html")
+#if (NOT tcheck_ENABLE_SANITIZER_ADDRESS AND NOT tcheck_ENABLE_SANITIZER_THREAD)
+#message(WARNING "You need asan or tsan enabled for meaningful fuzz testing")
+#endif()
+#add_subdirectory(fuzz_test)
+#
+#endif()
+
+# If MSVC is being used, and ASAN is enabled, we need to set the debugger environment
+# so that it behaves well with MSVC's debugger, and we can run the target from visual studio
+if(MSVC)
+  get_all_installable_targets(all_targets)
+  message("all_targets=${all_targets}")
+  set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=$(VC_ExecutablePath_x64);%PATH%")
+endif()
+
+# set the startup project for the "play" button in MSVC
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT intro)
+
+if(CMAKE_SKIP_INSTALL_RULES)
+  return()
+endif()
+
+#include(cmake/PackageProject.cmake)
+
+# Add other targets that you want installed here, by default we just package the one executable
+# we know we want to ship
+#tcheck_package_project(
+#  TARGETS
+#  intro
+#  tcheck_options
+#  tcheck_warnings
+  # FIXME: this does not work! CK
+  # PRIVATE_DEPENDENCIES_CONFIGURED project_options project_warnings
+  #)
+
+# Experience shows that explicit package naming can help make it easier to sort
+# out potential ABI related issues before they start, while helping you
+# track a build to a specific GIT SHA
+#set(CPACK_PACKAGE_FILE_NAME
+#    "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${GIT_SHORT_SHA}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}"
+#)
+
+#include(CPack)
