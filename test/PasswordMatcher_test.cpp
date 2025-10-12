@@ -1,8 +1,6 @@
-// TODO RYS fix dependencies, for test only, build as lib
-// TODO RYS add src as include directory
-// TOOD RYS compare gtest with catch2 and doctest
-#include "../src/matchers.hpp"
+#include <mtch/matchers.hpp>
 
+// TOOD RYS compare gtest with catch2 and doctest
 #include <gtest/gtest.h>
 
 TEST(Validation, Base)
