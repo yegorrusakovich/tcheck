@@ -1,6 +1,5 @@
 enable_testing()
 
-find_package(gtest REQUIRED) # for intro, project_options, ...
 include(GoogleTest)
 
 add_executable(password
