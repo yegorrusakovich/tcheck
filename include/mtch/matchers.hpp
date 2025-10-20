@@ -23,11 +23,16 @@ struct HostNameMatcher : PatternMatcher {
 /// @attention single threaded
 struct UriMatcher : PatternMatcher {
   UriMatcher();
-  bool IsValid(string const& text) const override;
+  bool IsValid(std::string_view text) const override;
 
  private:
   Ipv4Matcher ipv4_matcher_;
   HostNameMatcher host_matcher_;
+};
+
+/// @brief date validator and matcher
+struct DateMatcher : PatternMatcher {
+  DateMatcher();
 };
 
 }  // namespace tcheck

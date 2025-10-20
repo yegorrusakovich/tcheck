@@ -29,3 +29,17 @@ target_link_libraries(uri
 )
 
 gtest_discover_tests(uri)
+
+add_executable(date
+  DateMatcher_test.cpp
+)
+
+target_link_libraries(date
+    tcheck_options
+    tcheck_warnings
+# TODO RYS why target_link_system_libraries don't link here?
+    tcheck::mtch
+    GTest::gtest_main
+)
+
+gtest_discover_tests(date)

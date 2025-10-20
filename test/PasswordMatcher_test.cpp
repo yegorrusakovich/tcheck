@@ -4,13 +4,13 @@
 // catch2 and doctest
 #include <gtest/gtest.h>
 
-TEST(Validation, Base) {
+TEST(PasswordValidation, Base) {
   tcheck::PasswordMatcher matcher;
   ASSERT_TRUE(matcher.IsValid("rtG3FG!Tr^e"));
   ASSERT_FALSE(matcher.IsValid("password"));
 }
 
-TEST(Validation, FailConditions) {
+TEST(PasswordValidation, FailConditions) {
   tcheck::PasswordMatcher matcher;
   EXPECT_FALSE(matcher.IsValid("rtG3FG!Tr^eя")) << "only latin";
   EXPECT_FALSE(matcher.IsValid("rtG3FG!Tr^e."))
@@ -25,7 +25,7 @@ TEST(Validation, FailConditions) {
       << "no two identical symbols in a row";
 }
 
-TEST(Validation, ComplexTrueCases) {
+TEST(PasswordValidation, ComplexTrueCases) {
   tcheck::PasswordMatcher matcher;
   ASSERT_TRUE(matcher.IsValid("rtG3FG!Tr^e"));
   ASSERT_TRUE(matcher.IsValid("aA1!*!1Aa"));

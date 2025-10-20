@@ -2,7 +2,7 @@
 
 #include <mtch/matchers.hpp>
 
-TEST(Validation, Base) {
+TEST(UriValidation, Base) {
   tcheck::UriMatcher matcher;
 
   EXPECT_TRUE(matcher.IsValid("http://example.com"));
@@ -23,7 +23,7 @@ TEST(Validation, Base) {
   EXPECT_TRUE(matcher.IsValid("ftp://ftp.example.com/path/"));
 }
 
-TEST(Validation, Components) {
+TEST(UriValidation, Components) {
   tcheck::UriMatcher matcher;
 
   // ipv4
@@ -33,7 +33,7 @@ TEST(Validation, Components) {
   EXPECT_FALSE(matcher.IsValid("http://255.168.1.78989:21"));
 }
 
-TEST(Validation, TrickyCases) {
+TEST(UriValidation, TrickyCases) {
   tcheck::UriMatcher matcher;
 
   EXPECT_TRUE(matcher.IsValid("ftp://host:21/path/to%20file"))
@@ -48,7 +48,7 @@ TEST(Validation, TrickyCases) {
 
 /// @brief Idea here to move semantic obligations to regexp too
 /// @attention it maybe bad decision check semantic by tool for syntax checks
-TEST(Validation, Http) {
+TEST(UriValidation, Http) {
   tcheck::UriMatcher matcher;
   // TODO RYS here print GetUserErrorDescription
 

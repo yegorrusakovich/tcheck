@@ -4,20 +4,16 @@
 #include <regex>
 
 namespace tcheck {
-// TODO RYS move to config
-template <typename T>
-using vector = std::vector<T>;
-
-using string = std::string;
 
 class PatternMatcher {
  public:
   explicit PatternMatcher(std::string_view regexp);
   virtual ~PatternMatcher() = default;
 
-  virtual bool IsValid(string const& text) const;
-  // TODO RYS add search (for searching in text)
-  virtual vector<string> Match(string const& text) const;
+  /// no string allocations, text must outlive calls and result usage
+  virtual bool IsValid(std::string_view text) const;
+  virtual std::vector<std::string_view> Match(std::string_view text) const;
+  virtual std::vector<std::string_view> Search(std::string_view text) const;
   virtual std::string GetUserErrorDescription() const;
 
  private:

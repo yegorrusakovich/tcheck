@@ -46,7 +46,7 @@ UriMatcher::UriMatcher()
 // (https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.1:~:text=no%20more%20than-,255,-characters%20in%20length)
 // There is no specific scheme dependent uri rules that worse to be set on match
 // level
-bool UriMatcher::IsValid(string const& text) const {
+bool UriMatcher::IsValid(std::string_view text) const {
   auto res = PatternMatcher::Match(text);
   if (res.empty()) return false;
 
@@ -68,4 +68,5 @@ HostNameMatcher::HostNameMatcher()
                      "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\\.[a-zA-Z0-9](["
                      "a-zA-Z0-9-]*[a-zA-Z0-9])?)*$"} {}
 
+DateMatcher::DateMatcher() : PatternMatcher{""} {}
 }  // namespace tcheck
